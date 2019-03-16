@@ -46,15 +46,18 @@ $(document).ready(function() {
 
     function display() {
 
-        var queryURL = "https://api.giphy.com/v1/gifs/search?q=" + searchTerm + "&api_key=" + API + "&limit=10";
-
         var searchTerm = $(this).attr("data-name");
+        console.log(searchTerm);
+
+        var queryURL = "https://api.giphy.com/v1/gifs/search?q=" + searchTerm + "&api_key=" + API + "&limit=10";
 
         $.ajax({
             url: queryURL,
             method: "GET"
         }).then(function (response) {
             var results = response.data;
+
+            $("#gifs").empty();
 
             for (var i = 0; i < results.length; i++) {
 
@@ -63,13 +66,18 @@ $(document).ready(function() {
                 var movingIMG = results[i].images.fixed_height.url;
 
 
+
                 var gif = $("<img>").attr("src", stillIMG);
+                // console.log(gif);
+
                 $(gif).attr("data-state", "still")
                       .attr("data-still", stillIMG)
                       .attr("data-animate", movingIMG)
                       .addClass("gif");
+                // console.log(gif);
 
-                $("#gifs").append("<div class='current'>" + gif + "<p>Rating: " + rating + "</p>");
+
+                $("#gifs").append("<div class='current'>").append(gif).append("<p>Rating: " + rating + "</p>");
 
             }
         });
